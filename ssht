@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# ssht — ssh into a remote tmux session (attach or create), or a plain shell if the remote lacks tmux.
+
+set -euo pipefail
+
+session="main"
+args=()
+
+while (( $# )); do
+  case "$1" in
+    --session)
+      session="${2:?ssht: --session needs a name}"
+      shift 2
+      ;;
+    *)
+      args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+ssh -t "${args[@]}" \
+  "if command -v tmux >/dev/null 2>&1; then tmux new -A -s '${session}'; else echo 'ssht: tmux not installed on remote, starting plain session' >&2; exec \${SHELL:-/bin/sh}; fi"
