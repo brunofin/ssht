@@ -1,12 +1,13 @@
 #!/bin/sh
-# ssht installer — copies the ssht script into $PREFIX (default ~/.local/bin).
+# ssht installer — downloads the ssht script into $PREFIX (default ~/.local/bin).
 set -eu
 
 prefix="${PREFIX:-$HOME/.local/bin}"
-mkdir -p "$prefix"
-script_dir=$(cd "$(dirname "$0")" && pwd)
+url="https://raw.githubusercontent.com/brunofin/ssht/main/ssht"
 
-install -m 755 "$script_dir/ssht" "$prefix/ssht"
+mkdir -p "$prefix"
+curl -fsSL "$url" -o "$prefix/ssht"
+chmod +x "$prefix/ssht"
 echo "ssht installed to $prefix/ssht"
 
 case ":$PATH:" in
