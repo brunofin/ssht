@@ -20,8 +20,16 @@ One tmux layer, on the server. No nested tmux, no config, no keybinding juggling
 ## Install
 
 ```sh
-curl -fsSL <url-to-ssht> -o ~/.local/bin/ssht && chmod +x ~/.local/bin/ssht
-# or: copy this repo's `ssht` file into your PATH
+curl -fsSL https://raw.githubusercontent.com/brunofin/ssht/main/install.sh | sh
+```
+
+That puts `ssht` in `~/.local/bin` (override with `PREFIX=/some/dir`). Alternatively, clone and
+run the installer, or just copy the single `ssht` file anywhere on your PATH:
+
+```sh
+git clone https://github.com/brunofin/ssht
+PREFIX=~/.local/bin ~/ssht/install.sh
+# or: install -m 755 ~/ssht/ssht ~/.local/bin/ssht
 ```
 
 Requires only `bash` locally and `tmux` on the remote (optional — plain shell fallback).
