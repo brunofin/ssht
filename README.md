@@ -61,6 +61,24 @@ ssht -J bastion -p 2222 -A user@10.0.0.5
 - Detach with `Ctrl-b d`; the session survives. Re-run `ssht` to pick it back up.
 - Session names with a single quote break the remote command (assumed sane; not escaped).
 
+## Similar tools
+
+`ssht` is not the first wrapper to land in a remote tmux session, but it's the smallest with a
+real fallback. The trick itself comes from a 2014 Stack Overflow answer
+(`ssh -t 'tmux attach || tmux new'`), later simplified with tmux's built-in `tmux new -A`
+(which `ssht` uses). Tools we found while building this:
+
+| Tool | What it does | Differs from ssht |
+|------|--------------|--------------------|
+| [brejoc/ssht](https://github.com/brejoc/ssht) | Same goal: attach/create a remote tmux session over ssh | Makefile-packaged with a brew tap; unmaintained ~3 years; no fallback when tmux is absent |
+| [wheatdog/sshmux](https://github.com/wheatdog/sshmux) | Bash wrapper giving persistent ssh via tmux | Adds `-s`/`--ls`/`--tmux-path` flags and client-side reconnect; breaks ssh's own `-s` flag; requires tmux (no plain-shell fallback) |
+| [shabane/ssht](https://github.com/shabane/ssht) | Go TUI listing hosts into synchronized tmux panes | Different purpose (multi-host pane sync), not single-session attach |
+| [tmux-ssh](https://github.com/tmux-ssh/tmux-ssh) | Spawns synchronized SSH sessions in one tmux window | Different purpose (type once, execute everywhere) |
+| byobu / tmuxinator / tmux-resurrect | Session managers & persistence helpers | Bigger surface: config files, YAML layouts, plugin dependencies |
+
+`ssht` deliberately does one thing: one command, zero config, everything else forwarded
+verbatim to ssh, and a graceful degrade to a plain shell on hosts without tmux.
+
 ## License
 
 MIT
